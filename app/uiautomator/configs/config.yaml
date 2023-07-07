@@ -1,0 +1,11 @@
+device:
+  platformName: "Android"
+  platformVersion: "9"
+  browserName: "chrome"
+  deviceName: "f8e4ca8e"
+  verbose: true
+  automationName: "uiautomator2"
+  server:
+    scheme: http
+    addr: localhost:4723
+    timeout: 3s
