@@ -104,29 +104,35 @@ class MoloSDK:
                 MoloSDK._assert_key(key)
                 MoloSDK._assert_value(value, key)
 
-    def _track(self, track_type, task_name, execute_id):
+    def _track(self, track_type, task_name, execute_id, properties):
         """
         :param track_type:
-        :param task_name:
         :param execute_id:
+        :param properties
         :return:
         """
+        track_time = self._now()
         data = {
-            'type': "",
-            'time': "",
-            'execute_id': "",
-            'properties': "",
+            'type': track_type,
+            'time': track_time,
+            'execute_id': execute_id,
+            'properties': properties,
         }
+        if self._task_name is not None:
+            data['task'] = self._task_name
+        data = self._normalize_data(data)
         self._consumer.report(self._json_dumps(data))
 
-    def track(self, task_name, execute_id):
+    def track(self, task_name, execute_id, properties):
         """
         跟踪一个用户的行为。
 
         :param task_name:
         :param execute_id: 执行的唯一标识
+        :param properties: 上报属性集合
         """
-        self._track('task', task_name, execute_id)
+        self._track('task', task_name, execute_id, properties)
+
 
 class MoloConsumer:
     def __init__(self, url: str = None, request_timeout: int = None):
@@ -156,7 +162,7 @@ class MoloConsumer:
             else:
                 urllib.request.urlopen(request)
         except urllib.error.HTTPError as e:
-            raise Exception
+            raise MoloNetworkException(e)
         return True
 
     def report(self, msg):
