@@ -123,15 +123,16 @@ class MoloSDK:
         data = self._normalize_data(data)
         self._consumer.report(self._json_dumps(data))
 
-    def track(self, task_name, execute_id, properties):
+    def track(self, properties=None, task_name=None, execute_id=None, track_type=None):
         """
         跟踪一个用户的行为。
 
+        :param track_type:
         :param task_name:
         :param execute_id: 执行的唯一标识
         :param properties: 上报属性集合
         """
-        self._track('task', task_name, execute_id, properties)
+        self._track(track_type, task_name, execute_id, properties)
 
 
 class MoloConsumer:

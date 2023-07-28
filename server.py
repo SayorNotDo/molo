@@ -16,5 +16,10 @@ async def hello_world(request):
     return text("Hello world.")
 
 
+@app.get("/")
+async def heart_beat(request):
+    return text("ping")
+
+
 if __name__ == '__main__':
     app.run(debug=True, access_log=True)
